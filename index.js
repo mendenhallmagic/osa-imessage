@@ -2,6 +2,8 @@ var fs = require('fs');
 var osa = require('osa');
 var uuid = require('node-uuid').v1();
 var spawn = require('child_process').spawn;
+var mkfifo = require('mkfifo').mkfifoSync;
+var execSync = require('sync-exec');
 
 var EventEmitter = require("events").EventEmitter;
 var LineStream = require('byline').LineStream;
@@ -82,7 +84,7 @@ iMessage.getContact = function(input, cb) {
 };
 
 iMessage.listen = function() {
-    // TODO: Broken. execSync('mkfifo' + FIFO_PATH, 0755);
+    mkfifo(FIFO_PATH, 0755);
 
     var fd = fs.openSync(SCRIPT_PATH, 'w');
     fs.writeSync(fd, listenScript, 0, listenScript.length);
